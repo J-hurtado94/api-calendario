@@ -1,0 +1,36 @@
+services:
+  postgres-db:
+    image: postgres:latest
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: Calendariolaboral
+    ports:
+      - "5435:5432"  # Exponer el puerto 5433 en la máquina local, internamente PostgreSQL sigue usando 5432
+    volumes:
+      - ./DDL_Calendario.sql:/docker-entrypoint-initdb.d/DDL_Calendario.sql
+      - ./DML_Calendario.sql:/docker-entrypoint-initdb.d/DML_Calendario.sql
+
+    networks:
+      - redcalendario
+
+  spring-boot-api:
+    build:
+      context: .  # Indica que Docker debe buscar el Dockerfile en el directorio actual
+      dockerfile: Dockerfile
+    container_name: spring-boot-api
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/Calendariolaboral
+      SPRING_DATASOURCE_USERNAME: admin
+      SPRING_DATASOURCE_PASSWORD: admin
+    depends_on:
+      - postgres-db
+    networks:
+      - redcalendario
+    ports:
+      - "8080:8080"  # Exponer el puerto 8080 de la aplicación
+
+networks:
+  redcalendario:
+    driver: bridge

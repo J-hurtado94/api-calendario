@@ -1,15 +1,10 @@
 spring:
-  application:
-    name: apicalendario
   datasource:
-    url: jdbc:postgresql://localhost:5433/calendariolaboral
-    username: postgres
-    password:
+    url: jdbc:postgresql://postgres-db:5432/Calendariolaboral  # Nombre del servicio en Docker y puerto 5432 (interno en Docker)
+    username: admin
+    password: admin
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: update  # Puedes cambiar a 'none' o 'validate' si los scripts SQL ya manejan el DDL
     show-sql: true
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
 
