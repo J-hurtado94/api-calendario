@@ -3,8 +3,11 @@ spring:
     url: jdbc:postgresql://postgres-db:5432/Calendariolaboral  # Nombre del servicio en Docker y puerto 5432 (interno en Docker)
     username: admin
     password: admin
+    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
       ddl-auto: update  # Puedes cambiar a 'none' o 'validate' si los scripts SQL ya manejan el DDL
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 

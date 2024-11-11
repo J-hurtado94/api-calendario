@@ -20,11 +20,11 @@ public class Calendario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
+    @Column( nullable = false)
     private LocalDate fecha;
-    @ManyToOne // Relación muchos a uno con Tipo
-    @JoinColumn(name = "IdTipo", nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "idtipo", nullable = false)
     private Tipo tipo;
-    @Column(length = 100)
+    @Column(length = 100,name = "Descripcion")
     private String description;
 }

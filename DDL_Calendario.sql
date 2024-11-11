@@ -20,8 +20,8 @@ CREATE UNIQUE INDEX ixTipo
 CREATE TABLE Calendario(
 	Id SERIAL PRIMARY KEY,
 	Fecha DATE NOT NULL,
-	IdTipo INT NOT NULL,
-    CONSTRAINT fkCalendario_Tipo FOREIGN KEY (IdTipo) REFERENCES Tipo(Id),
+	idTipo INT NOT NULL,
+    CONSTRAINT fkCalendario_Tipo FOREIGN KEY (idTipo) REFERENCES Tipo(Id),
     Descripcion VARCHAR(100) NULL
 	);
 

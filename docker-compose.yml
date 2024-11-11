@@ -1,36 +1,40 @@
 services:
+  # Servicio de base de datos PostgreSQL
   postgres-db:
-    image: postgres:latest
-    container_name: postgres-db
+    image: postgres:latest  # Usar la imagen de PostgreSQL
+    container_name: postgres-db  # Nombre del contenedor
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: Calendariolaboral
+      POSTGRES_USER: admin  # Usuario para la base de datos
+      POSTGRES_PASSWORD: admin  # Contraseña para la base de datos
+      POSTGRES_DB: Calendariolaboral  # Nombre de la base de datos a crear
     ports:
-      - "5435:5432"  # Exponer el puerto 5433 en la máquina local, internamente PostgreSQL sigue usando 5432
+      - "5435:5432"  # Exponer el puerto 5435 en la máquina local, el contenedor sigue usando 5432
     volumes:
-      - ./DDL_Calendario.sql:/docker-entrypoint-initdb.d/DDL_Calendario.sql
-      - ./DML_Calendario.sql:/docker-entrypoint-initdb.d/DML_Calendario.sql
-
+      - ./DDL_Calendario.sql:/docker-entrypoint-initdb.d/DDL_Calendario.sql  # Volumen para inicializar la DB
+      - ./DML_Calendario.sql:/docker-entrypoint-initdb.d/DML_Calendario.sql  # Volumen para datos iniciales
     networks:
-      - redcalendario
+      - redcalendario  # Conectar a la red definida más abajo
 
+  # Servicio de la aplicación Spring Boot
   spring-boot-api:
     build:
-      context: .  # Indica que Docker debe buscar el Dockerfile en el directorio actual
-      dockerfile: Dockerfile
-    container_name: spring-boot-api
+      context: .  # Usar el Dockerfile en el directorio actual
+      dockerfile: Dockerfile  # Nombre del Dockerfile
+    container_name: spring-boot-api  # Nombre del contenedor
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/Calendariolaboral
-      SPRING_DATASOURCE_USERNAME: admin
-      SPRING_DATASOURCE_PASSWORD: admin
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/Calendariolaboral  # URL de conexión a la base de datos
+      SPRING_DATASOURCE_USERNAME: admin  # Usuario de la base de datos
+      SPRING_DATASOURCE_PASSWORD: admin  # Contraseña de la base de datos
     depends_on:
-      - postgres-db
+      - postgres-db  # El servicio spring-boot-api depende de postgres-db
     networks:
-      - redcalendario
+      - redcalendario  # Conectar a la misma red
     ports:
-      - "8080:8080"  # Exponer el puerto 8080 de la aplicación
+      - "8080:8080"  # Exponer el puerto 8080 de la aplicación Spring Boot
 
+# Definición de redes (bridge es el driver predeterminado)
 networks:
   redcalendario:
-    driver: bridge
+    name: redcalendario
+    external: true
+    driver: bridge  # Usar el driver bridge para la red

@@ -28,7 +28,7 @@ public class CalendarioService {
     private final ITipoRepositorio tipoRepositorio;
 
     public CalendarioService(WebClient.Builder webClientBuilder, ICalendarioRepositorio calendarioRepositorio, ITipoRepositorio tipoRepositorio) {
-        this.webClient = webClientBuilder.baseUrl("http://localhost:3000/festivos").build();
+        this.webClient = webClientBuilder.baseUrl("http://172.18.0.4:3000/festivos").build();
 
         this.calendarioRepositorio = calendarioRepositorio;
         this.tipoRepositorio = tipoRepositorio;
@@ -66,7 +66,7 @@ public class CalendarioService {
 
             if (festivosMap.containsKey(fecha)) {
 
-                tipoDia = tipoRepositorio.findByTipo("Día festivo");
+                tipoDia = tipoRepositorio.findByTipo("Día laboral");
                 descripcion = diaDeLaSemana;
             } else if (fecha.getDayOfWeek() == DayOfWeek.SATURDAY || fecha.getDayOfWeek() == DayOfWeek.SUNDAY) {
 
@@ -74,13 +74,14 @@ public class CalendarioService {
                 descripcion = diaDeLaSemana;
             } else {
 
-                tipoDia = tipoRepositorio.findByTipo("Día laboral");
+                tipoDia = tipoRepositorio.findByTipo("Día festivo");
                 descripcion = diaDeLaSemana;
             }
 
             Calendario calendario = new Calendario();
-            calendario.setFecha(fecha);
             calendario.setTipo(tipoDia);
+            calendario.setFecha(fecha);
+
             calendario.setDescription(descripcion);
 
             calendarioRepositorio.save(calendario);
