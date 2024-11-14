@@ -28,7 +28,7 @@ public class CalendarioService {
     private final ITipoRepositorio tipoRepositorio;
 
     public CalendarioService(WebClient.Builder webClientBuilder, ICalendarioRepositorio calendarioRepositorio, ITipoRepositorio tipoRepositorio) {
-        this.webClient = webClientBuilder.baseUrl("http://172.18.0.4:3000/festivos").build();
+        this.webClient = webClientBuilder.baseUrl("http://apifestivoscolombia:3000/festivos").build();
 
         this.calendarioRepositorio = calendarioRepositorio;
         this.tipoRepositorio = tipoRepositorio;
